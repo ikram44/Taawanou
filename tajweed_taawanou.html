@@ -24,12 +24,12 @@ h1, h2 { text-align: center; color: #2E8B57; }
 </head>
 <body>
 
-<h1>اختبار تجويد تفاعلي / Quiz Tajweed</h1>
+<h1>اختبار تجويد تفاعلي</h1>
 <h2>إعداد: إكرام خليف – طالبات وتعاونوا</h2>
 
 <div id="startContainer" style="text-align:center;">
-<label>الاسم / Nom: <input type="text" id="studentName"></label><br><br>
-<button onclick="startQuiz()">ابدأ الاختبار / Commencer le quiz</button>
+<label>الاسم: <input type="text" id="studentName"></label><br><br>
+<button onclick="startQuiz()">ابدأ الاختبار</button>
 </div>
 
 <div id="quizContainer"></div>
@@ -41,56 +41,16 @@ h1, h2 { text-align: center; color: #2E8B57; }
 
 <script>
 const questions = [
-  {
-    text: "الحكم التجويدي في قوله تعالى: 'عليمٌ حكيم' / Règle de Tajweed pour 'Alimun Hakim'",
-    options: ["أ) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ب) إدغام كامل بدون غنة / Complete Idgham sans Ghunnah", "ج) إدغام ناقص بغنة / Idgham partiel avec Ghunnah", "د) الإظهار الحقيقي / Al-Idhhar Al-Haqiqi", "هـ) الإظهار الشفوي / Al-Idhhar Al-Shafawi"],
-    correct: 3
-  },
-  {
-    text: "الحكم التجويدي في قوله تعالى: 'مِنْهُم' / Règle de Tajweed pour 'Minhum'",
-    options: ["أ) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ب) إدغام كامل بدون غنة / Complete Idgham sans Ghunnah", "ج) إدغام ناقص بغنة / Idgham partiel avec Ghunnah", "د) الإظهار الحقيقي / Al-Idhhar Al-Haqiqi", "هـ) الإظهار الشفوي / Al-Idhhar Al-Shafawi"],
-    correct: 3
-  },
-  {
-    text: "الحكم التجويدي في قوله تعالى: 'غفورٌ رحيم' / Règle de Tajweed pour 'Ghafurun Rahim'",
-    options: ["أ) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ب) إدغام كامل بدون غنة / Complete Idgham sans Ghunnah", "ج) إدغام ناقص بغنة / Idgham partiel avec Ghunnah", "د) الإظهار الشفوي / Al-Idhhar Al-Shafawi"],
-    correct: 1
-  },
-  {
-    text: "الحكم التجويدي في قوله تعالى: 'سميعٌ بصير' / Règle de Tajweed pour 'Samii'un Basir'",
-    options: ["أ) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ب) إدغام كامل بدون غنة / Complete Idgham sans Ghunnah", "ج) إدغام ناقص بغنة / Idgham partiel avec Ghunnah", "د) الإقلاب / Iqlab", "هـ) الإظهار الشفوي / Al-Idhhar Al-Shafawi"],
-    correct: 3
-  },
-  {
-    text: "الحكم التجويدي في قوله تعالى: 'عليمٌ بذات الصدور' / Règle de Tajweed pour 'Alimun Bi Dhati As-Sudur'",
-    options: ["أ) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ب) إدغام كامل بدون غنة / Complete Idgham sans Ghunnah", "ج) إدغام ناقص بغنة / Idgham partiel avec Ghunnah", "د) الإقلاب / Iqlab", "هـ) الإظهار الشفوي / Al-Idhhar Al-Shafawi"],
-    correct: 3
-  },
-  {
-    text: "الحكم التجويدي في قوله تعالى: 'منْ يعمل' / Règle de Tajweed pour 'Man Ya'mal'",
-    options: ["أ) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ب) إدغام كامل بدون غنة / Complete Idgham sans Ghunnah", "ج) إدغام ناقص بغنة / Idgham partiel avec Ghunnah", "د) الإظهار الحقيقي / Al-Idhhar Al-Haqiqi", "هـ) الإظهار الشفوي / Al-Idhhar Al-Shafawi"],
-    correct: 2
-  },
-  {
-    text: "في كلمة 'كفّارا'، حرف الراء مفخّم أم مرقّق؟ / Dans le mot 'Kaffara', la lettre Ra est-elle épaisse ou fine?",
-    options: ["أ) مفخّم / Épaisse", "ب) مرقّق / Fine"],
-    correct: 0
-  },
-  {
-    text: "الحكم التجويدي للمدّ في كلمة 'الضّالّين' / Règle du Madd pour 'Ad-Dallin'",
-    options: ["أ) مد طبيعي / Madd Tabii", "ب) مد واجب متصل / Madd Wajib Muttasil", "ج) مد جائز منفصل / Madd Jaiz Munfasil", "د) مد لازم كلمي مثقل / Madd Lazim Kalimi Muthaqal"],
-    correct: 2
-  },
-  {
-    text: "الحكم التجويدي في قوله تعالى: 'منْ أنفسكم' / Règle de Tajweed pour 'Min Anfusikum'",
-    options: ["أ) الإظهار الحلقى / Al-Idhhar Al-Halq", "ب) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ج) الإقلاب / Iqlab", "د) إدغام ناقص بغنة / Idgham partiel avec Ghunnah"],
-    correct: 0
-  },
-  {
-    text: "الإقلاب من أحكام الميم الساكنة / Iqlab fait-il partie des règles de la lettre Mim Sakin ?",
-    options: ["أ) صح / Vrai", "ب) خطأ / Faux"],
-    correct: 1
-  }
+  { text: "الحكم التجويدي في قوله تعالى: 'عليمٌ حكيم'", options: ["أ) إدغام كامل بغنة", "ب) إدغام كامل بدون غنة", "ج) إدغام ناقص بغنة", "د) الإظهار الحقيقي", "هـ) الإظهار الشفوي"], correct: 3 },
+  { text: "الحكم التجويدي في قوله تعالى: 'مِنْهُم'", options: ["أ) إدغام كامل بغنة", "ب) إدغام كامل بدون غنة", "ج) إدغام ناقص بغنة", "د) الإظهار الحقيقي", "هـ) الإظهار الشفوي"], correct: 3 },
+  { text: "الحكم التجويدي في قوله تعالى: 'غفورٌ رحيم'", options: ["أ) إدغام كامل بغنة", "ب) إدغام كامل بدون غنة", "ج) إدغام ناقص بغنة", "د) الإظهار الشفوي"], correct: 1 },
+  { text: "الحكم التجويدي في قوله تعالى: 'سميعٌ بصير'", options: ["أ) إدغام كامل بغنة", "ب) إدغام كامل بدون غنة", "ج) إدغام ناقص بغنة", "د) الإقلاب", "هـ) الإظهار الشفوي"], correct: 3 },
+  { text: "الحكم التجويدي في قوله تعالى: 'عليمٌ بذات الصدور'", options: ["أ) إدغام كامل بغنة", "ب) إدغام كامل بدون غنة", "ج) إدغام ناقص بغنة", "د) الإقلاب", "هـ) الإظهار الشفوي"], correct: 3 },
+  { text: "الحكم التجويدي في قوله تعالى: 'منْ يعمل'", options: ["أ) إدغام كامل بغنة", "ب) إدغام كامل بدون غنة", "ج) إدغام ناقص بغنة", "د) الإظهار الحقيقي", "هـ) الإظهار الشفوي"], correct: 2 },
+  { text: "في كلمة 'كفّارا'، حرف الراء مفخّم أم مرقّق؟", options: ["أ) مفخّم", "ب) مرقّق"], correct: 0 },
+  { text: "الحكم التجويدي للمدّ في كلمة 'الضّالّين'", options: ["أ) مد طبيعي", "ب) مد واجب متصل", "ج) مد جائز منفصل", "د) مد لازم كلمي مثقل"], correct: 2 },
+  { text: "الحكم التجويدي في قوله تعالى: 'منْ أنفسكم'", options: ["أ) الإظهار الحلقى", "ب) إدغام كامل بغنة", "ج) الإقلاب", "د) إدغام ناقص بغنة"], correct: 0 },
+  { text: "الإقلاب من أحكام الميم الساكنة", options: ["أ) صح", "ب) خطأ"], correct: 1 }
 ];
 
 let currentQuestion = 0;
@@ -100,7 +60,7 @@ let studentName = "";
 
 function startQuiz() {
   studentName = document.getElementById('studentName').value.trim();
-  if(studentName === "") { alert("يرجى إدخال الاسم / Veuillez entrer votre nom"); return; }
+  if(studentName === "") { alert("يرجى إدخال الاسم"); return; }
   document.getElementById('startContainer').style.display = "none";
   document.getElementById('quizContainer').style.display = "block";
   showQuestion();
@@ -132,7 +92,7 @@ function checkAnswer(button, correct) {
 
   if(correct){
     button.classList.add('correct');
-    feedback.textContent = "🎉 أحسنت! إجابة صحيحة! / Correct!";
+    feedback.textContent = "🎉 أحسنت! إجابة صحيحة!";
     correctSound.play();
     score++;
     for(let i=0;i<15;i++){
@@ -145,7 +105,7 @@ function checkAnswer(button, correct) {
     }
   } else {
     button.classList.add('wrong');
-    feedback.textContent = "❌ إجابة خاطئة! / Incorrect!";
+    feedback.textContent = "❌ إجابة خاطئة!";
     wrongSound.play();
   }
 
@@ -161,17 +121,18 @@ function checkAnswer(button, correct) {
 function showResult() {
   document.getElementById('quizContainer').style.display = "none";
   let resultDiv = document.getElementById('result');
-  resultDiv.innerHTML = `<h3>🏆 النتيجة النهائية للطالبة / Résultat final de ${studentName} :</h3>
-    <p>عدد الإجابات الصحيحة: ${score} من ${questions.length} / Score: ${score} sur ${questions.length}</p>
-    <h4>مراجعة الإجابات / Révision des réponses :</h4>`;
+  resultDiv.innerHTML = `<h3>🏆 النتيجة النهائية للطالبة: ${studentName}</h3>
+    <p>عدد الإجابات الصحيحة: ${score} من ${questions.length}</p>
+    <h4>مراجعة الإجابات:</h4>`;
   studentAnswers.forEach((item,index)=>{
     resultDiv.innerHTML += `<p><strong>السؤال ${index+1}:</strong> ${item.question}<br>
-      إجابتك / Votre réponse: ${item.answer}<br>
-      الإجابة الصحيحة / Réponse correcte: ${item.correctAnswer}</p>`;
+      إجابتك: ${item.answer}<br>
+      الإجابة الصحيحة: ${item.correctAnswer}</p>`;
   });
 }
 </script>
 
 </body>
 </html>
+
 

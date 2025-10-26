@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>اختبار تجويد تفاعلي</title>
+<style>
+body { font-family: Arial, sans-serif; direction: rtl; margin: 20px; background: #f0f8ff; }
+h1, h2 { text-align: center; color: #2E8B57; }
+.question { margin-bottom: 25px; padding: 15px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9; position: relative; overflow: hidden; }
+.options button { display: block; margin: 5px 0; padding: 10px; width: 100%; border-radius: 5px; border: none; cursor: pointer; font-size: 16px; transition: transform 0.2s; }
+.options button:hover { transform: scale(1.02); }
+.correct { background-color: #4CAF50; color: white; }
+.wrong { background-color: #f44336; color: white; }
+.feedback { margin-top: 10px; font-weight: bold; font-size: 16px; }
+.firework { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
+.star { position: absolute; width: 10px; height: 10px; background: gold; border-radius: 50%; animation: fly 1s ease-out forwards; }
+@keyframes fly {
+  0% { transform: translate(0,0) scale(1); opacity:1; }
+  100% { transform: translate(var(--x), var(--y)) scale(0); opacity:0; }
+}
+#result { text-align: center; font-size: 22px; font-weight: bold; color: #2E8B57; margin-top: 30px; }
+#quizContainer { display:none; }
+</style>
+</head>
+<body>
+
+<h1>اختبار تجويد تفاعلي / Quiz Tajweed</h1>
+<h2>إعداد: إكرام خليف – طالبات وتعاونوا</h2>
+
+<div id="startContainer" style="text-align:center;">
+<label>الاسم / Nom: <input type="text" id="studentName"></label><br><br>
+<button onclick="startQuiz()">ابدأ الاختبار / Commencer le quiz</button>
+</div>
+
+<div id="quizContainer"></div>
+
+<div id="result"></div>
+
+<audio id="correctSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+<audio id="wrongSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+
+<script>
+const questions = [
+  {
+    text: "الحكم التجويدي في قوله تعالى: 'عليمٌ حكيم' / Règle de Tajweed pour 'Alimun Hakim'",
+    options: ["أ) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ب) إدغام كامل بدون غنة / Complete Idgham sans Ghunnah", "ج) إدغام ناقص بغنة / Idgham partiel avec Ghunnah", "د) الإظهار الحقيقي / Al-Idhhar Al-Haqiqi", "هـ) الإظهار الشفوي / Al-Idhhar Al-Shafawi"],
+    correct: 3
+  },
+  {
+    text: "الحكم التجويدي في قوله تعالى: 'مِنْهُم' / Règle de Tajweed pour 'Minhum'",
+    options: ["أ) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ب) إدغام كامل بدون غنة / Complete Idgham sans Ghunnah", "ج) إدغام ناقص بغنة / Idgham partiel avec Ghunnah", "د) الإظهار الحقيقي / Al-Idhhar Al-Haqiqi", "هـ) الإظهار الشفوي / Al-Idhhar Al-Shafawi"],
+    correct: 3
+  },
+  {
+    text: "الحكم التجويدي في قوله تعالى: 'غفورٌ رحيم' / Règle de Tajweed pour 'Ghafurun Rahim'",
+    options: ["أ) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ب) إدغام كامل بدون غنة / Complete Idgham sans Ghunnah", "ج) إدغام ناقص بغنة / Idgham partiel avec Ghunnah", "د) الإظهار الشفوي / Al-Idhhar Al-Shafawi"],
+    correct: 1
+  },
+  {
+    text: "الحكم التجويدي في قوله تعالى: 'سميعٌ بصير' / Règle de Tajweed pour 'Samii'un Basir'",
+    options: ["أ) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ب) إدغام كامل بدون غنة / Complete Idgham sans Ghunnah", "ج) إدغام ناقص بغنة / Idgham partiel avec Ghunnah", "د) الإقلاب / Iqlab", "هـ) الإظهار الشفوي / Al-Idhhar Al-Shafawi"],
+    correct: 3
+  },
+  {
+    text: "الحكم التجويدي في قوله تعالى: 'عليمٌ بذات الصدور' / Règle de Tajweed pour 'Alimun Bi Dhati As-Sudur'",
+    options: ["أ) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ب) إدغام كامل بدون غنة / Complete Idgham sans Ghunnah", "ج) إدغام ناقص بغنة / Idgham partiel avec Ghunnah", "د) الإقلاب / Iqlab", "هـ) الإظهار الشفوي / Al-Idhhar Al-Shafawi"],
+    correct: 3
+  },
+  {
+    text: "الحكم التجويدي في قوله تعالى: 'منْ يعمل' / Règle de Tajweed pour 'Man Ya'mal'",
+    options: ["أ) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ب) إدغام كامل بدون غنة / Complete Idgham sans Ghunnah", "ج) إدغام ناقص بغنة / Idgham partiel avec Ghunnah", "د) الإظهار الحقيقي / Al-Idhhar Al-Haqiqi", "هـ) الإظهار الشفوي / Al-Idhhar Al-Shafawi"],
+    correct: 2
+  },
+  {
+    text: "في كلمة 'كفّارا'، حرف الراء مفخّم أم مرقّق؟ / Dans le mot 'Kaffara', la lettre Ra est-elle épaisse ou fine?",
+    options: ["أ) مفخّم / Épaisse", "ب) مرقّق / Fine"],
+    correct: 0
+  },
+  {
+    text: "الحكم التجويدي للمدّ في كلمة 'الضّالّين' / Règle du Madd pour 'Ad-Dallin'",
+    options: ["أ) مد طبيعي / Madd Tabii", "ب) مد واجب متصل / Madd Wajib Muttasil", "ج) مد جائز منفصل / Madd Jaiz Munfasil", "د) مد لازم كلمي مثقل / Madd Lazim Kalimi Muthaqal"],
+    correct: 2
+  },
+  {
+    text: "الحكم التجويدي في قوله تعالى: 'منْ أنفسكم' / Règle de Tajweed pour 'Min Anfusikum'",
+    options: ["أ) الإظهار الحلقى / Al-Idhhar Al-Halq", "ب) إدغام كامل بغنة / Complete Idgham avec Ghunnah", "ج) الإقلاب / Iqlab", "د) إدغام ناقص بغنة / Idgham partiel avec Ghunnah"],
+    correct: 0
+  },
+  {
+    text: "الإقلاب من أحكام الميم الساكنة / Iqlab fait-il partie des règles de la lettre Mim Sakin ?",
+    options: ["أ) صح / Vrai", "ب) خطأ / Faux"],
+    correct: 1
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let studentAnswers = [];
+let studentName = "";
+
+function startQuiz() {
+  studentName = document.getElementById('studentName').value.trim();
+  if(studentName === "") { alert("يرجى إدخال الاسم / Veuillez entrer votre nom"); return; }
+  document.getElementById('startContainer').style.display = "none";
+  document.getElementById('quizContainer').style.display = "block";
+  showQuestion();
+}
+
+function showQuestion() {
+  if(currentQuestion >= questions.length){
+    showResult();
+    return;
+  }
+  const q = questions[currentQuestion];
+  const quizDiv = document.getElementById('quizContainer');
+  let html = `<div class="question"><p><strong>السؤال ${currentQuestion+1}:</strong> ${q.text}</p><div class="options">`;
+  q.options.forEach((opt, index)=>{
+    html += `<button onclick="checkAnswer(this, ${index === q.correct})">${opt}</button>`;
+  });
+  html += `</div><div class="feedback"></div><div class="firework"></div></div>`;
+  quizDiv.innerHTML = html;
+}
+
+function checkAnswer(button, correct) {
+  const q = questions[currentQuestion];
+  const feedback = button.parentElement.nextElementSibling;
+  const fireworkDiv = button.parentElement.nextElementSibling.nextElementSibling;
+  const correctSound = document.getElementById('correctSound');
+  const wrongSound = document.getElementById('wrongSound');
+
+  studentAnswers.push({question: q.text, answer: button.textContent, correctAnswer: q.options[q.correct]});
+
+  if(correct){
+    button.classList.add('correct');
+    feedback.textContent = "🎉 أحسنت! إجابة صحيحة! / Correct!";
+    correctSound.play();
+    score++;
+    for(let i=0;i<15;i++){
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.setProperty('--x', (Math.random()*200-100)+'px');
+      star.style.setProperty('--y', (Math.random()*-200)+'px');
+      fireworkDiv.appendChild(star);
+      setTimeout(()=>fireworkDiv.removeChild(star), 1000);
+    }
+  } else {
+    button.classList.add('wrong');
+    feedback.textContent = "❌ إجابة خاطئة! / Incorrect!";
+    wrongSound.play();
+  }
+
+  const buttons = button.parentElement.querySelectorAll('button');
+  buttons.forEach(b => b.disabled = true);
+
+  setTimeout(()=>{
+    currentQuestion++;
+    showQuestion();
+  }, 1000);
+}
+
+function showResult() {
+  document.getElementById('quizContainer').style.display = "none";
+  let resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = `<h3>🏆 النتيجة النهائية للطالبة / Résultat final de ${studentName} :</h3>
+    <p>عدد الإجابات الصحيحة: ${score} من ${questions.length} / Score: ${score} sur ${questions.length}</p>
+    <h4>مراجعة الإجابات / Révision des réponses :</h4>`;
+  studentAnswers.forEach((item,index)=>{
+    resultDiv.innerHTML += `<p><strong>السؤال ${index+1}:</strong> ${item.question}<br>
+      إجابتك / Votre réponse: ${item.answer}<br>
+      الإجابة الصحيحة / Réponse correcte: ${item.correctAnswer}</p>`;
+  });
+}
+</script>
+
+</body>
+</html>
+
